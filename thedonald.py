@@ -1,7 +1,9 @@
 import random as rnd
+import matplotlib
 import matplotlib.pyplot as plt
 from scipy.stats import beta
 import argparse
+import numpy as np
 
 
 parser = argparse.ArgumentParser(description='Batch frequency learning simulation using a single Bayesian agent')
@@ -91,9 +93,9 @@ def iterate(number_of_ones):
 
 #----
 #starting input ratio and number of productions
-fig, axes = plt.subplots(nrows=3, ncols=6, figsize=(6, 6)) #
+fig, axes = plt.subplots(nrows=3, ncols=6, figsize=(16, 8)) #
 fs = 10
-exponents= [1.5,5,15]
+exponents= [1.5,50,150]
 obs = range(0,6)
 row = -1
 bigprob = []
@@ -111,10 +113,15 @@ for exponent in exponents:
 		axes[row, i].bar([x[0] for x in bigprob[i]],[x[1] for x in bigprob[i]],align='center',width=0.2,color='g')
 		axes[row, i].set_title("exponent: "+str(expt), fontsize=fs)
 		axes[row, i].axvline(x=i+5, color='r', linestyle='dashed', linewidth=2)
+		start, end = axes[row, i].get_xlim()
+		axes[row, i].xaxis.set_ticks(np.arange(start, end, 1))
+		axes[row, i].yaxis.set_ticks(np.arange(0, 1, 0.1))
+
 	bigprob = []
 #plots
 
-
+fig = matplotlib.pyplot.gcf()
+fig.set_size_inches(16, 8)
 plt.show()
 
 
