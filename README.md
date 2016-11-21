@@ -1,0 +1,2 @@
+# batchlearner
+Bayesian batch learner 
