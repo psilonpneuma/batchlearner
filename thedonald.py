@@ -58,10 +58,9 @@ def produce(p):
 #----
 # Hypothesis choice
 # every run counts the occurrencies of x
-def iterate(number_of_ones):
+def iterate(number_of_ones,alpha):
 	ones=[] #count of x in every run
 	runs=args.runs
-	alpha=args.alpha
 	learning=args.learning
 	#expt=args.exponent
 	for r in range(runs):
@@ -93,48 +92,35 @@ def iterate(number_of_ones):
 
 #----
 #starting input ratio and number of productions
-fig, axes = plt.subplots(nrows=3, ncols=6, figsize=(16, 8)) #
+fig, axes = plt.subplots(nrows=9, ncols=6, figsize=(14, 8)) #
 fs = 10
-exponents= [1.5,50,150]
+alphas = [0.01,1,100]
+exponents= [1.5,5,15]
 obs = range(0,6)
 row = -1
 bigprob = []
-for exponent in exponents:
-	row += 1
-	expt=exponent
-	print "- outer loop - exponent={0},row={1},".format(expt,row)
-	for i in obs: ##populate one row
-		print "--inner loop - i={0},".format(i)
-		prob=iterate(i+5)
-		print "-- inner loop - prob={0},".format(prob)
-		bigprob.append(prob)
-		print "-- inner loop - bigprob={0},".format(bigprob)
-		print "-- inner loop - xarray={0},".format([x[0] for x in bigprob[i]])
-		axes[row, i].bar([x[0] for x in bigprob[i]],[x[1] for x in bigprob[i]],align='center',width=0.2,color='g')
-		axes[row, i].set_title("exponent: "+str(expt), fontsize=fs)
-		axes[row, i].axvline(x=i+5, color='r', linestyle='dashed', linewidth=2)
-		start, end = axes[row, i].get_xlim()
-		axes[row, i].xaxis.set_ticks(np.arange(start, end, 1))
-		axes[row, i].yaxis.set_ticks(np.arange(0, 1, 0.1))
+for a in alphas:
+	for expt in exponents:
+		row += 1
+		print "- outer loop - exponent={0},row={1},".format(expt,row)
+		for i in obs: ##populate one row
+			print "--inner loop - i={0},".format(i)
+			prob=iterate(i+5,a)
+			print "-- inner loop - prob={0},".format(prob)
+			bigprob.append(prob)
+			print "-- inner loop - bigprob={0},".format(bigprob)
+			print "-- inner loop - xarray={0},".format([x[0] for x in bigprob[i]])
+			axes[row, i].bar([x[0] for x in bigprob[i]],[x[1] for x in bigprob[i]],align='center',width=0.3,color='b')
+			axes[row, i].set_title("exponent: "+str(expt), fontsize=fs)
+			axes[row, i].axvline(x=i+5, color='r', linestyle='dashed', linewidth=2)
+			axes[row, i].xaxis.set_ticks(np.arange(0, 10, 1))
+			axes[row, i].yaxis.set_ticks(np.arange(0, 1, 0.5))
 
-	bigprob = []
-#plots
+		bigprob = []
+	#plots
 
 fig = matplotlib.pyplot.gcf()
 fig.set_size_inches(16, 8)
 plt.show()
 
 
-	# plt.figure()
-	# plt.bar([x[0] for x in prob],[x[1] for x in prob],align='center',width=0.2,color='g')
-	# plt.axvline(i, color='b', linestyle='dashed', linewidth=2)
-	# plt.xticks(range(11),fontsize=18)
-	# plt.yticks([0,0.1,0.2,0.3,0.4,0.5,0.6,0.7],fontsize=10)
-	# plt.xlabel("output count of variant x",fontsize=14)
-	# plt.ylabel("P(x'|x)",fontsize=30)
-	# plt.subplots_adjust(left=0.15)
-	# plt.subplots_adjust(bottom=0.15)
-	# # plt.title(args.learning+" prior "+str(alpha)+" Starting count of x: "+str(starting_count_w1)+"prod: "+args.production)
-	# # title= args.learning+"_bias="+str(alpha)+production+" "
-	# # plt.savefig("/Users/chiarasemenzin/Desktop/Dissertation/graphs/batch/"+title+str(starting_count_w1)+".png")
-	# plt.show()
