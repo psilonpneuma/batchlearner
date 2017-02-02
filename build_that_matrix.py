@@ -159,7 +159,10 @@ for exponent in exponents:
 	A_list = []
 	for pb in bigprob:
 		#A_list.append([x[1] for x in pb]) # original code with no tiny number/normalization added 
-		A_list.append([(x[1]+0.0001)/sum([i[1] for i in pb]) for x in pb]) # new bit 
+		
+		# new bit: 0.0001 is added to each probability, and then the probability is divided by the sum of all probabilities.
+		#this normalizes the rows so they sum to 1
+		A_list.append([(x[1]+0.0001)/sum([i[1] for i in pb]) for x in pb]) 
 	A=np.array([pp for pp in A_list])
 	bigprob = []
 	p = PrettyTable() #prettyprint A
