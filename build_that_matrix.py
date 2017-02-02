@@ -158,7 +158,8 @@ for exponent in exponents:
 
 	A_list = []
 	for pb in bigprob:
-		A_list.append([x[1] for x in pb])
+		#A_list.append([x[1] for x in pb]) # original code with no tiny number/normalization added 
+		A_list.append([(x[1]+0.0001)/sum([i[1] for i in pb]) for x in pb]) # new bit 
 	A=np.array([pp for pp in A_list])
 	bigprob = []
 	p = PrettyTable() #prettyprint A
